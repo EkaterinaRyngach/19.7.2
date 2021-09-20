@@ -104,7 +104,7 @@ def test_add_new_pet_with_negative_age(name='Жучка', animal_type='Кот', 
     status, result = pf.add_new_pet(auth_key, name, animal_type, age, pet_photo)
 
     # Сверяем полученный ответ с ожидаемым результатом
-    assert status == 403
+    assert status == 400
 
 
 def test_add_new_pet_with_invalid_age(name='Жучка', animal_type='Кот', age='asda',
@@ -121,7 +121,7 @@ def test_add_new_pet_with_invalid_age(name='Жучка', animal_type='Кот', a
     status, result = pf.add_new_pet(auth_key, name, animal_type, age, pet_photo)
 
     # Сверяем полученный ответ с ожидаемым результатом
-    assert status == 403
+    assert status == 400
 
 
 def test_add_new_pet_with_empty_name(name='', animal_type='Кот', age='-4',
@@ -138,8 +138,7 @@ def test_add_new_pet_with_empty_name(name='', animal_type='Кот', age='-4',
     status, result = pf.add_new_pet(auth_key, name, animal_type, age, pet_photo)
 
     # Сверяем полученный ответ с ожидаемым результатом
-    assert status == 403
-
+    assert status == 400
 
 def test_successful_delete_self_pet():
     """Проверяем воможность удаления питомца"""
@@ -185,7 +184,7 @@ def test_seccessful_update_self_pet_info(name='Мурзик', animal_type='Ко�
 
 
 def test_update_self_pet_info_invalid_name(name='', animal_type='Кот', age=5):
-    """Проверяем возможность обновления информации о питомце"""
+    """Проверяем возможность обновления информации о питомце с пустым именем"""
 
     # Получаем ключ auth_key и список своих питомцев
     _, auth_key = pf.get_api_key(valid_email, valid_password)
@@ -195,8 +194,8 @@ def test_update_self_pet_info_invalid_name(name='', animal_type='Кот', age=5)
     if len(my_pets['pets']) > 0:
         status, result = pf.update_pet_info(auth_key, my_pets['pets'][0]['id'], name, animal_type, age)
 
-        # Проверяем что статус ответа = 200 и  имя питомца соответствует заданному
-        assert status == 403
+        # Проверяем что статус ответа = 400
+        assert status == 400
     else:
         # если список питомцев пустой, то выкидываем исключение с текстом об отсутсвии своих питомцев
         raise Exception("There is no my pets")
